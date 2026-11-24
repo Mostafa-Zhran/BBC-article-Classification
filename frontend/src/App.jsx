@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import DatasetAnalytics from './pages/DatasetAnalytics';
-import { API_BASE_URL } from './config';
+import { API_BASE_URL, getApiHeaders } from './config';
 
 const SECTOR_ICONS = {
   business: TrendingUp,
@@ -96,7 +96,7 @@ export default function App() {
     try {
       const response = await fetch(`${API_BASE_URL}/api/predict`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getApiHeaders(),
         body: JSON.stringify({ text: inputText }),
       });
 

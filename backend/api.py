@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pathlib import Path
@@ -66,19 +67,66 @@ SECTOR_META = {
     },
 }
 
+# ── Security & Allowed Frontend Origins ──────────────────────
+DEFAULT_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173"
+]
+
+cors_env = os.getenv("CORS_ORIGINS", "")
+if cors_env and cors_env.strip() != "*":
+    ALLOWED_ORIGINS = [o.strip() for o in cors_env.split(",") if o.strip()]
+else:
+    ALLOWED_ORIGINS = DEFAULT_ALLOWED_ORIGINS
+
+CLIENT_API_KEY = os.getenv("CLIENT_API_KEY", "bbc-nlp-secure-frontend-key-2026")
+
 app = FastAPI(title="BBC News Classifier API")
 
-# Enable CORS for React frontend (configurable via CORS_ORIGINS)
-cors_env = os.getenv("CORS_ORIGINS", "*")
-origins = [o.strip() for o in cors_env.split(",")] if cors_env != "*" else ["*"]
-
+# Strict CORS: Only allow verified frontend origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
+
+# Middleware: Restrict requests strictly to the frontend client
+@app.middleware("http")
+async def verify_frontend_client(request: Request, call_next):
+    # 1. Allow preflight OPTIONS requests without blocking
+    if request.method == "OPTIONS":
+        return await call_next(request)
+
+    # 2. Allow public health probe for deployment orchestrators
+    if request.url.path in ["/api/health", "/docs", "/openapi.json"]:
+        return await call_next(request)
+
+    # 3. Check Origin / Referer if sent by a web browser
+    origin = request.headers.get("origin")
+    if origin and origin not in ALLOWED_ORIGINS:
+        return JSONResponse(
+            status_code=403,
+            content={
+                "detail": f"Access forbidden: Origin '{origin}' is not authorized. Requests are only accepted from the frontend application."
+            }
+        )
+
+    # 4. Check Frontend Client Signature / Secret Key
+    client_secret = request.headers.get("x-client-secret")
+    if client_secret != CLIENT_API_KEY:
+        return JSONResponse(
+            status_code=403,
+            content={
+                "detail": "Access forbidden: Missing or unauthorized frontend client key. Direct unauthorized access is denied."
+            }
+        )
+
+    return await call_next(request)
 
 class PredictRequest(BaseModel):
     text: str
