@@ -4,6 +4,7 @@ import {
   RefreshCw, Filter
 } from 'lucide-react';
 import PlotlyChart from '../components/PlotlyChart';
+import { API_BASE_URL } from '../config';
 
 const CATEGORY_COLORS = {
   Business: '#00E5FF',
@@ -25,7 +26,7 @@ export default function DatasetAnalytics() {
   const [activeWordCategory, setActiveWordCategory] = useState('business');
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/analytics')
+    fetch(`${API_BASE_URL}/api/analytics`)
       .then(res => res.json())
       .then(json => {
         setData(json);

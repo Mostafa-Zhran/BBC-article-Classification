@@ -55,9 +55,11 @@ desktop.ini
 *.swp
 *.swo
 
-# 5. Local Environment Variables
+# 5. Local Environment Variables (Keep examples, ignore secrets/local)
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*.local
+*.env
+**/.env
+**/.env*.local
+!*.example
+!**/*.example

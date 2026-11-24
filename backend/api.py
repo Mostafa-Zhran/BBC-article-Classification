@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from pathlib import Path
-import joblib, re, html, string, time
+import os, joblib, re, html, string, time
 import numpy as np
 import pandas as pd
 import nltk
@@ -16,7 +16,7 @@ for pkg in ['punkt', 'punkt_tab', 'stopwords', 'wordnet', 'omw-1.4']:
 
 # ── Paths & Model Loading ────────────────────────────────────
 BASE_DIR   = Path(__file__).resolve().parent.parent
-MODEL_PATH = BASE_DIR / "models" / "bbc_best_model.pkl"
+MODEL_PATH = Path(os.getenv("MODEL_PATH", BASE_DIR / "models" / "bbc_best_model.pkl"))
 RAW_DATA   = BASE_DIR / "data" / "bbc-text.csv"
 CLEAN_DATA = BASE_DIR / "data" / "bbc_cleaned.csv"
 
@@ -68,10 +68,13 @@ SECTOR_META = {
 
 app = FastAPI(title="BBC News Classifier API")
 
-# Enable CORS for React frontend
+# Enable CORS for React frontend (configurable via CORS_ORIGINS)
+cors_env = os.getenv("CORS_ORIGINS", "*")
+origins = [o.strip() for o in cors_env.split(",")] if cors_env != "*" else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -253,3 +256,10 @@ def predict_article(req: PredictRequest):
             "model_benchmark_f1": "99.05%"
         }
     }
+
+
+if __name__ == "__main__":
+    import uvicorn
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("backend.api:app", host=host, port=port, reload=False)
