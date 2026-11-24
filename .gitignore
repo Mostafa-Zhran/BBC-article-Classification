@@ -1,0 +1,63 @@
+# ==========================================
+# BBC News NLP Project - .gitignore
+# ==========================================
+
+# 1. User-specified exclusions (Not to be uploaded)
+docs/
+data/
+scripts/
+
+# 2. Python & Environment
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 3. Node.js & React Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 4. Logs, System & IDE Files
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 5. Local Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
