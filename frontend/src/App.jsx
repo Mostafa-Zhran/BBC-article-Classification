@@ -267,11 +267,11 @@ export default function App() {
           <div className="dashboard-grid">
           
           {/* ── LEFT COLUMN: Text Input & Presets ───────────────── */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: 0, width: '100%', maxWidth: '100%' }}>
             
             {/* Input Card */}
-            <div className="glass-card" style={{ padding: '26px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+            <div className="glass-card" style={{ padding: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <FileText size={18} color="#00E5FF" />
                   <span style={{ fontWeight: 700, fontSize: '0.95em', letterSpacing: '0.5px' }}>
@@ -297,7 +297,7 @@ export default function App() {
                 }}
               />
 
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div className="classifier-actions">
                 <button
                   onClick={handleClassify}
                   disabled={loading || !inputText.trim()}
@@ -376,33 +376,15 @@ export default function App() {
                 </span>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', minWidth: 0 }}>
                 {PRESET_SCENARIOS.map((sc, i) => (
                   <div
                     key={i}
                     onClick={() => { setInputText(sc.text); setResult(null); }}
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.025)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
-                      borderRadius: '12px',
-                      padding: '12px 16px',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(0, 229, 255, 0.05)';
-                      e.currentTarget.style.borderColor = 'rgba(0, 229, 255, 0.3)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.025)';
-                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)';
-                    }}
+                    className="preset-card-item"
                   >
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className="preset-card-content">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                         <span className="mono" style={{ fontSize: '0.68em', fontWeight: 700, color: TAG_COLORS[sc.tag] || '#00E5FF', background: `${TAG_COLORS[sc.tag] || '#00E5FF'}18`, border: `1px solid ${TAG_COLORS[sc.tag] || '#00E5FF'}33`, padding: '2px 7px', borderRadius: '4px' }}>
                           {sc.tag}
                         </span>
@@ -410,11 +392,11 @@ export default function App() {
                           {sc.title}
                         </span>
                       </div>
-                      <p style={{ fontSize: '0.75em', color: 'var(--text-dim)', marginTop: '4px', maxWidth: '420px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <p className="preset-card-desc">
                         {sc.text}
                       </p>
                     </div>
-                    <span style={{ fontSize: '0.8em', color: '#00E5FF' }}>→</span>
+                    <span style={{ fontSize: '0.8em', color: '#00E5FF', flexShrink: 0 }}>→</span>
                   </div>
                 ))}
               </div>
@@ -423,17 +405,19 @@ export default function App() {
           </div>
 
           {/* ── RIGHT COLUMN: Classification Results ────────────── */}
-          <div>
+          <div style={{ minWidth: 0, width: '100%', maxWidth: '100%' }}>
             {!result ? (
               <div className="glass-card" style={{
                 height: '100%',
+                minHeight: '260px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '60px 30px',
+                padding: '40px 20px',
                 textAlign: 'center',
-                borderStyle: 'dashed'
+                borderStyle: 'dashed',
+                minWidth: 0
               }}>
                 <div style={{
                   width: '64px',
@@ -456,11 +440,11 @@ export default function App() {
                 </p>
               </div>
             ) : (
-              <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+              <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: 0, width: '100%' }}>
                 
                 {/* 1. Category Result Card */}
                 <div className="glass-card" style={{
-                  padding: '28px',
+                  padding: '24px',
                   position: 'relative',
                   overflow: 'hidden',
                   borderColor: result.meta.color,
@@ -476,9 +460,9 @@ export default function App() {
                     pointerEvents: 'none'
                   }} />
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: result.meta.color }} className="animate-pulse-glow"></span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', flexWrap: 'wrap', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+                      <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: result.meta.color, flexShrink: 0 }} className="animate-pulse-glow"></span>
                       <span className="mono" style={{ fontSize: '0.78em', fontWeight: 700, color: result.meta.color, letterSpacing: '1px' }}>
                         PREDICTED CATEGORY
                       </span>
@@ -509,7 +493,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="hero-verdict-header" style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '22px' }}>
+                  <div className="hero-verdict-header" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px', minWidth: 0, width: '100%' }}>
                     <div className="hero-verdict-icon" style={{
                       borderRadius: '16px',
                       background: `linear-gradient(135deg, ${result.meta.color}33, ${result.meta.color}11)`,
@@ -517,16 +501,17 @@ export default function App() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      boxShadow: `0 0 25px ${result.meta.color}35`
+                      boxShadow: `0 0 25px ${result.meta.color}35`,
+                      flexShrink: 0
                     }}>
-                      <IconComponent size={32} color={result.meta.color} />
+                      <IconComponent size={30} color={result.meta.color} />
                     </div>
 
-                    <div>
-                      <h2 className="hero-verdict-title">
+                    <div style={{ minWidth: 0, flex: 1, overflow: 'hidden' }}>
+                      <h2 className="hero-verdict-title" style={{ wordBreak: 'break-word' }}>
                         {result.meta.title}
                       </h2>
-                      <p style={{ fontSize: '0.85em', color: 'var(--text-muted)', marginTop: '2px' }}>
+                      <p style={{ fontSize: '0.85em', color: 'var(--text-muted)', marginTop: '2px', wordBreak: 'break-word' }}>
                         {result.meta.description}
                       </p>
                     </div>

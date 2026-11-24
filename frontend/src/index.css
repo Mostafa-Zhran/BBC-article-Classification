@@ -56,6 +56,10 @@ body {
   border-radius: 20px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .glass-card:hover {
@@ -140,6 +144,61 @@ textarea:focus {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
   gap: 28px;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-grid > * {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.preset-card-item {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.preset-card-item:hover {
+  background: rgba(0, 229, 255, 0.05);
+  border-color: rgba(0, 229, 255, 0.3);
+}
+
+.preset-card-content {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.preset-card-desc {
+  font-size: 0.75em;
+  color: var(--text-dim);
+  margin-top: 4px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.classifier-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .telemetry-grid {
@@ -184,11 +243,16 @@ textarea:focus {
   
   .app-main {
     padding: 16px 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .dashboard-grid {
-    grid-template-columns: 1fr !important;
-    gap: 18px !important;
+    grid-template-columns: 100% !important;
+    gap: 16px !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .charts-grid {
@@ -207,7 +271,7 @@ textarea:focus {
   }
 
   .glass-card {
-    padding: 18px !important;
+    padding: 18px 16px !important;
     border-radius: 16px !important;
   }
 
@@ -248,22 +312,39 @@ textarea:focus {
     padding: 12px 8px !important;
   }
 
+  .dashboard-grid {
+    gap: 12px !important;
+  }
+
   .kpi-grid {
     grid-template-columns: 1fr !important;
     gap: 8px !important;
   }
 
   .glass-card {
-    padding: 14px !important;
+    padding: 14px 12px !important;
+    border-radius: 14px !important;
   }
 
   .hero-verdict-title {
     font-size: 1.25em !important;
   }
 
+  .hero-verdict-icon {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
   .hero-verdict-header {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 10px !important;
+    gap: 12px !important;
+  }
+
+  .classifier-actions {
+    gap: 8px !important;
+  }
+
+  .classifier-actions button {
+    padding: 12px 14px !important;
+    font-size: 0.86em !important;
   }
 }
