@@ -300,8 +300,8 @@ export default function DatasetAnalytics() {
       </div>
 
       {/* ── Class Comparison Table (Full Precision) ──────────── */}
-      <div className="glass-card" style={{ padding: '24px', minWidth: 0, overflowX: 'auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+      <div className="glass-card" style={{ padding: '24px', minWidth: 0, width: '100%', maxWidth: '100%', overflow: 'hidden', boxSizing: 'border-box' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '10px' }}>
           <div>
             <h3 style={{ fontSize: '1.05em', fontWeight: 700, color: '#FFF' }}>
               Class Distribution & Sizing Audit
@@ -310,46 +310,53 @@ export default function DatasetAnalytics() {
               Verified counts: Raw Kaggle dataset (2,225) vs Cleaned dataset (2,126)
             </p>
           </div>
-          <span className="mono" style={{ fontSize: '0.72em', color: '#00E5FF', background: 'rgba(0, 229, 255, 0.1)', padding: '4px 10px', borderRadius: '12px' }}>
-            5 BALANCED CATEGORIES
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <span className="mono" style={{ fontSize: '0.72em', color: '#00E5FF', background: 'rgba(0, 229, 255, 0.1)', padding: '4px 10px', borderRadius: '12px' }}>
+              5 BALANCED CATEGORIES
+            </span>
+            <span className="mono" style={{ fontSize: '0.68em', color: 'var(--text-dim)', background: 'rgba(255, 255, 255, 0.04)', padding: '4px 8px', borderRadius: '8px' }}>
+              ⇄ Scroll to view all
+            </span>
+          </div>
         </div>
 
-        <table style={{ width: '100%', minWidth: '560px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88em' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', color: 'var(--text-dim)' }}>
-              <th style={{ padding: '10px 14px' }}>Category</th>
-              <th style={{ padding: '10px 14px' }}>Raw Articles (2,225)</th>
-              <th style={{ padding: '10px 14px' }}>Raw Share %</th>
-              <th style={{ padding: '10px 14px' }}>Cleaned Articles (2,126)</th>
-              <th style={{ padding: '10px 14px' }}>Cleaned Share %</th>
-              <th style={{ padding: '10px 14px' }}>Duplicates Dropped</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.class_table.map((row) => (
-              <tr key={row.category} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)' }}>
-                <td style={{ padding: '12px 14px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, color: '#FFF' }}>
-                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: row.color, flexShrink: 0 }}></span>
-                  {row.category}
-                </td>
-                <td style={{ padding: '12px 14px' }} className="mono">{row.raw_count}</td>
-                <td style={{ padding: '12px 14px' }} className="mono">{row.raw_pct}%</td>
-                <td style={{ padding: '12px 14px', fontWeight: 700, color: row.color }} className="mono">{row.clean_count}</td>
-                <td style={{ padding: '12px 14px' }} className="mono">{row.clean_pct}%</td>
-                <td style={{ padding: '12px 14px', color: '#FF9100' }} className="mono">-{row.duplicates_removed}</td>
+        <div className="table-scroll-container">
+          <table className="audit-table">
+            <thead>
+              <tr style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', color: 'var(--text-dim)' }}>
+                <th>Category</th>
+                <th>Raw Articles (2,225)</th>
+                <th>Raw Share %</th>
+                <th>Cleaned Articles (2,126)</th>
+                <th>Cleaned Share %</th>
+                <th>Duplicates Dropped</th>
               </tr>
-            ))}
-            <tr style={{ fontWeight: 800, color: '#FFF', borderTop: '1px solid rgba(255, 255, 255, 0.12)' }}>
-              <td style={{ padding: '12px 14px' }}>Total</td>
-              <td style={{ padding: '12px 14px' }} className="mono">2,225</td>
-              <td style={{ padding: '12px 14px' }} className="mono">100.0%</td>
-              <td style={{ padding: '12px 14px', color: '#00FF88' }} className="mono">2,126</td>
-              <td style={{ padding: '12px 14px' }} className="mono">100.0%</td>
-              <td style={{ padding: '12px 14px', color: '#FF9100' }} className="mono">-99</td>
-            </tr>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.class_table.map((row) => (
+                <tr key={row.category} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)' }}>
+                  <td style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, color: '#FFF' }}>
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: row.color, flexShrink: 0 }}></span>
+                    {row.category}
+                  </td>
+                  <td className="mono">{row.raw_count}</td>
+                  <td className="mono">{row.raw_pct}%</td>
+                  <td style={{ fontWeight: 700, color: row.color }} className="mono">{row.clean_count}</td>
+                  <td className="mono">{row.clean_pct}%</td>
+                  <td style={{ color: '#FF9100' }} className="mono">-{row.duplicates_removed}</td>
+                </tr>
+              ))}
+              <tr style={{ fontWeight: 800, color: '#FFF', borderTop: '1px solid rgba(255, 255, 255, 0.12)' }}>
+                <td>Total</td>
+                <td className="mono">2,225</td>
+                <td className="mono">100.0%</td>
+                <td style={{ color: '#00FF88' }} className="mono">2,126</td>
+                <td className="mono">100.0%</td>
+                <td style={{ color: '#FF9100' }} className="mono">-99</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* ── Row 1 Charts: Distribution & Model Benchmarks ────── */}

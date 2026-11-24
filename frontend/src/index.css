@@ -201,6 +201,42 @@ textarea:focus {
   box-sizing: border-box;
 }
 
+/* Responsive Table Container */
+.table-scroll-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  display: block;
+  margin-top: 14px;
+  border-radius: 10px;
+}
+
+.audit-table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88em;
+}
+
+.audit-table th,
+.audit-table td {
+  padding: 10px 14px;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .audit-table {
+    font-size: 0.8em;
+    min-width: 480px;
+  }
+  .audit-table th,
+  .audit-table td {
+    padding: 8px 10px;
+  }
+}
+
 .telemetry-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
